@@ -18,16 +18,14 @@ public class PlayerController : MonoBehaviour
         _playerTargetPosition = transform.position;
     }
 
-    void FixedUpdate()
-    {
-        _direction.z = _speed;
-        _characterController.Move(_direction);
-        MoveToCurrentLine();
-    }
-
     void Update()
     {
+        _direction = Vector3.forward * _speed;
         ChangePlayerPosition();
+        _playerTargetPosition = new Vector3(_currentLine * _lineDistance, transform.position.y, transform.position.z);
+        float newX = Mathf.MoveTowards(transform.position.x, _playerTargetPosition.x, _lineChangeSpeed * Time.deltaTime);
+        _moveVector = new Vector3(newX - transform.position.x, 0, _direction.z * Time.deltaTime);
+        _characterController.Move(_moveVector);
     }
 
     private void ChangePlayerPosition()
@@ -45,13 +43,6 @@ public class PlayerController : MonoBehaviour
     private void ChangeLine(int direction)
     {
         _currentLine = Mathf.Clamp(_currentLine + direction, -1, 1);
-        MoveToCurrentLine();
     }
 
-    private void MoveToCurrentLine()
-    {
-        _playerTargetPosition.x = _currentLine * _lineDistance;
-        _moveVector = _playerTargetPosition - transform.position;
-        _characterController.Move(_moveVector * Time.deltaTime);
-    }
 }

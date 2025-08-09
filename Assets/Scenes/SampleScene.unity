@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputManager: {fileID: 55633284}
-  _speed: 1
+  _speed: 5
   _lineDistance: 2.5
   _lineChangeSpeed: 5
 --- !u!114 &55633284
