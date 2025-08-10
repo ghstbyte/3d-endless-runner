@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,6 +13,15 @@ public class PlayerController : MonoBehaviour
     private Vector3 _playerTargetPosition;
     private Vector3 _moveVector;
 
+    private void OnEnable()
+    {
+        _inputManager.EventButton += ChangeLine;
+    }
+    private void OnDisable()
+    {
+        _inputManager.EventButton -= ChangeLine;
+    }
+
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
@@ -21,23 +31,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         _direction = Vector3.forward * _speed;
-        ChangePlayerPosition();
         _playerTargetPosition = new Vector3(_currentLine * _lineDistance, transform.position.y, transform.position.z);
         float newX = Mathf.MoveTowards(transform.position.x, _playerTargetPosition.x, _lineChangeSpeed * Time.deltaTime);
         _moveVector = new Vector3(newX - transform.position.x, 0, _direction.z * Time.deltaTime);
         _characterController.Move(_moveVector);
-    }
-
-    private void ChangePlayerPosition()
-    {
-        if (_inputManager._inputActions.x > 0)
-        {
-            ChangeLine(+1);
-        }
-        else if (_inputManager._inputActions.x < 0)
-        {
-            ChangeLine(-1);
-        }
+        Debug.Log(_currentLine);
     }
 
     private void ChangeLine(int direction)
