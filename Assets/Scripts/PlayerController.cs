@@ -15,11 +15,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputManager.EventButton += ChangeLine;
+        _inputManager.LeftRightMovement += ChangeLine;
     }
     private void OnDisable()
     {
-        _inputManager.EventButton -= ChangeLine;
+        _inputManager.LeftRightMovement -= ChangeLine;
     }
 
     void Awake()
