@@ -7,8 +7,8 @@ public class InputManager : MonoBehaviour
     private Vector2 _keyboardInputActions;
     private Vector2 _touchStartedPosition;
     private Vector2 _touchCanceledPosition;
-    public event Action<int> LeftRightMovement;
-    public event Action<int> JumpUpDown;
+    public event Action<int> HorizontalMovement;
+    public event EventHandler VerticalMovementUp;
 
     private void Awake()
     {
@@ -23,13 +23,13 @@ public class InputManager : MonoBehaviour
                     Vector2 delta = _touchCanceledPosition - _touchStartedPosition;
                 if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
                 {
-                    if (delta.x > 0) LeftRightMovement?.Invoke(+1);
-                    else LeftRightMovement?.Invoke(-1);
+                    if (delta.x > 0) HorizontalMovement?.Invoke(+1);
+                    else HorizontalMovement?.Invoke(-1);
                 }
                 else
                 {
-                    if (delta.y > 0) Debug.Log("JumpUpDown?.Invoke(+1)");
-                    else Debug.Log("JumpUpDown?.Invoke(-1)");
+                    if (delta.y > 0) VerticalMovementUp?.Invoke(this, EventArgs.Empty);
+                    // else JumpUpDown?.Invoke);
                 }
             };
         movement.Enable();
@@ -50,11 +50,19 @@ public class InputManager : MonoBehaviour
         _keyboardInputActions = movement.Keyboard.Actions.ReadValue<Vector2>();
         if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.x > 0)
         {
-            LeftRightMovement?.Invoke(+1);
+            HorizontalMovement?.Invoke(+1);
         }
         else if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.x < 0)
         {
-            LeftRightMovement?.Invoke(-1);
+            HorizontalMovement?.Invoke(-1);
         }
+        if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.y > 0)
+        {
+            VerticalMovementUp?.Invoke(this, EventArgs.Empty);
+        }
+        // else if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.y < 0)
+        // {
+        //     JumpUpDown?.Invoke(this, EventArgs.Empty);
+        // }
     }
 }
