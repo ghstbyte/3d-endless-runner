@@ -158,6 +158,54 @@ public partial class @Movement: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Touchscreen"",
+            ""id"": ""286b8beb-9a98-44f0-a5cf-a4d30865d0dc"",
+            ""actions"": [
+                {
+                    ""name"": ""TouchPress"",
+                    ""type"": ""Button"",
+                    ""id"": ""0d0ac85c-67d1-4f7f-acc7-956854b4b798"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TouchPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""d7878931-abb0-476a-adde-466ea17ffe50"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""61f5e278-46ab-467b-bdef-a4ab6fe99706"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TouchPress"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be3288ed-3b62-4daa-8fe7-c466c4b837a2"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TouchPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -165,11 +213,16 @@ public partial class @Movement: IInputActionCollection2, IDisposable
         // Keyboard
         m_Keyboard = asset.FindActionMap("Keyboard", throwIfNotFound: true);
         m_Keyboard_Actions = m_Keyboard.FindAction("Actions", throwIfNotFound: true);
+        // Touchscreen
+        m_Touchscreen = asset.FindActionMap("Touchscreen", throwIfNotFound: true);
+        m_Touchscreen_TouchPress = m_Touchscreen.FindAction("TouchPress", throwIfNotFound: true);
+        m_Touchscreen_TouchPosition = m_Touchscreen.FindAction("TouchPosition", throwIfNotFound: true);
     }
 
     ~@Movement()
     {
         UnityEngine.Debug.Assert(!m_Keyboard.enabled, "This will cause a leak and performance issues, Movement.Keyboard.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Touchscreen.enabled, "This will cause a leak and performance issues, Movement.Touchscreen.Disable() has not been called.");
     }
 
     /// <summary>
@@ -337,6 +390,113 @@ public partial class @Movement: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="KeyboardActions" /> instance referencing this action map.
     /// </summary>
     public KeyboardActions @Keyboard => new KeyboardActions(this);
+
+    // Touchscreen
+    private readonly InputActionMap m_Touchscreen;
+    private List<ITouchscreenActions> m_TouchscreenActionsCallbackInterfaces = new List<ITouchscreenActions>();
+    private readonly InputAction m_Touchscreen_TouchPress;
+    private readonly InputAction m_Touchscreen_TouchPosition;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Touchscreen".
+    /// </summary>
+    public struct TouchscreenActions
+    {
+        private @Movement m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public TouchscreenActions(@Movement wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Touchscreen/TouchPress".
+        /// </summary>
+        public InputAction @TouchPress => m_Wrapper.m_Touchscreen_TouchPress;
+        /// <summary>
+        /// Provides access to the underlying input action "Touchscreen/TouchPosition".
+        /// </summary>
+        public InputAction @TouchPosition => m_Wrapper.m_Touchscreen_TouchPosition;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Touchscreen; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="TouchscreenActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(TouchscreenActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="TouchscreenActions" />
+        public void AddCallbacks(ITouchscreenActions instance)
+        {
+            if (instance == null || m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Add(instance);
+            @TouchPress.started += instance.OnTouchPress;
+            @TouchPress.performed += instance.OnTouchPress;
+            @TouchPress.canceled += instance.OnTouchPress;
+            @TouchPosition.started += instance.OnTouchPosition;
+            @TouchPosition.performed += instance.OnTouchPosition;
+            @TouchPosition.canceled += instance.OnTouchPosition;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="TouchscreenActions" />
+        private void UnregisterCallbacks(ITouchscreenActions instance)
+        {
+            @TouchPress.started -= instance.OnTouchPress;
+            @TouchPress.performed -= instance.OnTouchPress;
+            @TouchPress.canceled -= instance.OnTouchPress;
+            @TouchPosition.started -= instance.OnTouchPosition;
+            @TouchPosition.performed -= instance.OnTouchPosition;
+            @TouchPosition.canceled -= instance.OnTouchPosition;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="TouchscreenActions.UnregisterCallbacks(ITouchscreenActions)" />.
+        /// </summary>
+        /// <seealso cref="TouchscreenActions.UnregisterCallbacks(ITouchscreenActions)" />
+        public void RemoveCallbacks(ITouchscreenActions instance)
+        {
+            if (m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="TouchscreenActions.AddCallbacks(ITouchscreenActions)" />
+        /// <seealso cref="TouchscreenActions.RemoveCallbacks(ITouchscreenActions)" />
+        /// <seealso cref="TouchscreenActions.UnregisterCallbacks(ITouchscreenActions)" />
+        public void SetCallbacks(ITouchscreenActions instance)
+        {
+            foreach (var item in m_Wrapper.m_TouchscreenActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_TouchscreenActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="TouchscreenActions" /> instance referencing this action map.
+    /// </summary>
+    public TouchscreenActions @Touchscreen => new TouchscreenActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Keyboard" which allows adding and removing callbacks.
     /// </summary>
@@ -351,5 +511,27 @@ public partial class @Movement: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnActions(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Touchscreen" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="TouchscreenActions.AddCallbacks(ITouchscreenActions)" />
+    /// <seealso cref="TouchscreenActions.RemoveCallbacks(ITouchscreenActions)" />
+    public interface ITouchscreenActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "TouchPress" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTouchPress(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "TouchPosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTouchPosition(InputAction.CallbackContext context);
     }
 }

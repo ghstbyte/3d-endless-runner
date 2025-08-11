@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
         float newX = Mathf.MoveTowards(transform.position.x, _playerTargetPosition.x, _lineChangeSpeed * Time.deltaTime);
         _moveVector = new Vector3(newX - transform.position.x, 0, _direction.z * Time.deltaTime);
         _characterController.Move(_moveVector);
-        Debug.Log(_currentLine);
     }
 
     private void ChangeLine(int direction)
