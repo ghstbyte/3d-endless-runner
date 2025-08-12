@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     private Vector2 _touchCanceledPosition;
     public event Action<int> HorizontalMovement;
     public event EventHandler VerticalMovementUp;
+    public event EventHandler VerticalMovementDown;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class InputManager : MonoBehaviour
                 else
                 {
                     if (delta.y > 0) VerticalMovementUp?.Invoke(this, EventArgs.Empty);
-                    // else JumpUpDown?.Invoke);
+                    else VerticalMovementDown?.Invoke(this, EventArgs.Empty);
                 }
             };
         movement.Enable();
@@ -56,13 +57,15 @@ public class InputManager : MonoBehaviour
         {
             HorizontalMovement?.Invoke(-1);
         }
+
+        
         if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.y > 0)
         {
             VerticalMovementUp?.Invoke(this, EventArgs.Empty);
         }
-        // else if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.y < 0)
-        // {
-        //     JumpUpDown?.Invoke(this, EventArgs.Empty);
-        // }
+        else if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.y < 0)
+        {
+            VerticalMovementDown?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

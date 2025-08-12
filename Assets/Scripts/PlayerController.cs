@@ -20,12 +20,14 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         _inputManager.HorizontalMovement += ChangeLine;
-        _inputManager.VerticalMovementUp += _onJumpRequested;
+        _inputManager.VerticalMovementUp += _onJumpUpRequested;
+        _inputManager.VerticalMovementDown += _onJumpDownRequested;
     }
     private void OnDisable()
     {
         _inputManager.HorizontalMovement -= ChangeLine;
-        _inputManager.VerticalMovementUp -= _onJumpRequested;
+        _inputManager.VerticalMovementUp -= _onJumpUpRequested;
+        _inputManager.VerticalMovementDown -= _onJumpDownRequested;
     }
 
     void Awake()
@@ -50,11 +52,18 @@ public class PlayerController : MonoBehaviour
         _currentLine = Mathf.Clamp(_currentLine + direction, -1, 1);
     }
 
-    private void _onJumpRequested (object inputJump, EventArgs e)
+    private void _onJumpUpRequested (object inputJumpUp, EventArgs e)
     {
         if (_characterController.isGrounded == true)
         {
             _changeVerticalVector.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+        }
+    }
+    private void _onJumpDownRequested (object inputJumpDown, EventArgs e)
+    {
+        if (_characterController.isGrounded == false)
+        {
+            _changeVerticalVector.y = -Mathf.Sqrt(_jumpHeight * -2f * _gravity);
         }
     }
 }
