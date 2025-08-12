@@ -246,8 +246,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputManager: {fileID: 55633284}
-  _speed: 15
-  _lineDistance: 2.5
+  _speed: 25
+  _lineDistance: 6.5
   _lineChangeSpeed: 5
 --- !u!114 &55633284
 MonoBehaviour:
