@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _lineDistance;
     [SerializeField] private float _lineChangeSpeed;
+    private const float _maxSpeed = 100f;
     private int _currentLine = 0;
     private float _gravity = -9.81f;
     private float _jumpHeight = 3f;
@@ -16,6 +18,11 @@ public class PlayerController : MonoBehaviour
     private Vector3 _changeHorizontalVector;
     private Vector3 _changeVerticalVector;
     private Vector3 _totalMovementVector;
+
+    private void Start()
+    {
+        StartCoroutine(_speedIncrease());
+    }
 
     private void OnEnable()
     {
@@ -52,18 +59,28 @@ public class PlayerController : MonoBehaviour
         _currentLine = Mathf.Clamp(_currentLine + direction, -1, 1);
     }
 
-    private void _onJumpUpRequested (object inputJumpUp, EventArgs e)
+    private void _onJumpUpRequested(object inputJumpUp, EventArgs e)
     {
         if (_characterController.isGrounded == true)
         {
             _changeVerticalVector.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
         }
     }
-    private void _onJumpDownRequested (object inputJumpDown, EventArgs e)
+    private void _onJumpDownRequested(object inputJumpDown, EventArgs e)
     {
         if (_characterController.isGrounded == false)
         {
             _changeVerticalVector.y = -Mathf.Sqrt(_jumpHeight * -2f * _gravity);
         }
+    }
+
+    private IEnumerator _speedIncrease()
+    {
+        while (_speed < _maxSpeed)
+        {
+            _speed += 1f;
+            yield return new WaitForSeconds(2f);
+        }
+        StopCoroutine(_speedIncrease());
     }
 }
