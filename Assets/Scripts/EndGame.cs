@@ -1,16 +1,27 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EndGame : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private CharacterController _playerCharacterController;
+    [SerializeField] private GameObject _endGameUI;
+    private void Awake()
     {
-        
+        _playerCharacterController = GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        
+        if (hit.collider.CompareTag("Obstacle"))
+        {
+            _endGameUI.SetActive(true);
+            Time.timeScale = 0f;
+        }
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
