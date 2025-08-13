@@ -14,6 +14,10 @@ public class RoadGenerate : MonoBehaviour
     {
         for (int i = 0; i < _startRoads; i++)
         {
+            if (i == 0)
+            {
+                _spawnInfiniteRoads(3);
+            }
             _spawnInfiniteRoads(Random.Range(0, _roadPrefabs.Length));
         }
     }

@@ -196,7 +196,7 @@ MonoBehaviour:
   _inputManager: {fileID: 55633284}
   _speed: 25
   _lineDistance: 6.5
-  _lineChangeSpeed: 5
+  _lineChangeSpeed: 10
 --- !u!114 &55633284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1385,6 +1385,7 @@ MonoBehaviour:
   - {fileID: 2588479218188032316, guid: 0daca14dfbfd46c40add3bc2b934af63, type: 3}
   - {fileID: 6849680873607091791, guid: f944d8c1902808e43a64fad7e5780dc8, type: 3}
   - {fileID: 8052740707276519481, guid: 483a0c55134d7914a91f6054845f3528, type: 3}
+  - {fileID: 8052740707276519481, guid: e9eb19f1897052c4cbcc064538ededd7, type: 3}
 --- !u!4 &1321958634
 Transform:
   m_ObjectHideFlags: 0
