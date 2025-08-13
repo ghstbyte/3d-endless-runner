@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _lineChangeSpeed;
     private int _currentLine = 0;
     private float _gravity = -9.81f;
-    private float _jumpHeight = 2f;
+    private float _jumpHeight = 3f;
     private CharacterController _characterController;
     private Vector3 _direction;
     private Vector3 _playerTargetPosition;
