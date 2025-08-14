@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dcfad9607332a641ba2d081ca4b4f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 55633286}
   _inputManager: {fileID: 55633284}
   _speed: 25
   _lineDistance: 6.5
