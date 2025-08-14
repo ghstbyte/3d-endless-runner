@@ -4,6 +4,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Animator _animator;
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private float _speed;
     [SerializeField] private float _lineDistance;
@@ -18,6 +19,13 @@ public class PlayerController : MonoBehaviour
     private Vector3 _changeHorizontalVector;
     private Vector3 _changeVerticalVector;
     private Vector3 _totalMovementVector;
+
+    private float _normalHeight = 2f;
+    private Vector3 _normalCenter = new Vector3(0, 1f, -2f);
+    private float _slideHeight = 1f;
+    private Vector3 _slideCenter = new Vector3(0, 0.5f, -2f);
+    private float _slideDuration = 1.15f;
+    private bool _isSliding = false;
 
     private void Start()
     {
@@ -41,6 +49,7 @@ public class PlayerController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _playerTargetPosition = transform.position;
+        _animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -64,6 +73,7 @@ public class PlayerController : MonoBehaviour
         if (_characterController.isGrounded == true)
         {
             _changeVerticalVector.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            StartCoroutine(Jump());
         }
     }
     private void _onJumpDownRequested(object inputJumpDown, EventArgs e)
@@ -71,6 +81,11 @@ public class PlayerController : MonoBehaviour
         if (_characterController.isGrounded == false)
         {
             _changeVerticalVector.y = -Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            StartCoroutine(JumpDown());
+        }
+        if (_characterController.isGrounded == true && _isSliding == false)
+        {
+            StartCoroutine(Slide());
         }
     }
 
@@ -82,5 +97,31 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
         StopCoroutine(_speedIncrease());
+    }
+    private IEnumerator Slide()
+    {
+        _isSliding = true;
+        _animator.SetBool("IsSlide", true);
+        _characterController.height = _slideHeight;
+        _characterController.center = _slideCenter;
+        yield return new WaitForSeconds(_slideDuration);
+        _characterController.height = _normalHeight;
+        _characterController.center = _normalCenter;
+        _isSliding = false;
+        _animator.SetBool("IsSlide", false);
+    }
+    private IEnumerator Jump()
+    {
+        _characterController.height = _slideHeight;
+        _animator.SetBool("IsJumping", true);
+        yield return new WaitForSeconds(0.9f);
+        _characterController.height = _normalHeight;
+        _animator.SetBool("IsJumping", false);
+    }
+    private IEnumerator JumpDown()
+    {
+        _animator.SetBool("IsJumpDown", true);
+        yield return new WaitForSeconds(1.76f);
+        _animator.SetBool("IsJumpDown", false);
     }
 }
