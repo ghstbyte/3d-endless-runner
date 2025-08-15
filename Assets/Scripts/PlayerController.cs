@@ -21,10 +21,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 _totalMovementVector;
 
     private float _normalHeight = 2f;
-    private Vector3 _normalCenter = new Vector3(0, 1f, -2f);
+    private Vector3 _normalCenter = new Vector3(0, 1f, 0);
     private float _slideHeight = 1f;
-    private Vector3 _slideCenter = new Vector3(0, 0.5f, -2f);
-    private float _slideDuration = 1.15f;
+    private Vector3 _slideCenter = new Vector3(0, 0.5f, 0);
+    private float _slideDuration = 1f;
     private bool _isSliding = false;
 
     private void Start()
@@ -61,6 +61,14 @@ public class PlayerController : MonoBehaviour
         _totalMovementVector = _changeHorizontalVector + _changeVerticalVector * Time.deltaTime;
         _characterController.Move(_totalMovementVector);
         _changeVerticalVector.y += _gravity * Time.deltaTime;
+        if (_characterController.isGrounded && !_isSliding)
+        {
+            _animator.SetBool("IsRunning", true);
+        }
+        else
+        {
+            _animator.SetBool("IsRunning", false);
+        }
     }
 
     private void ChangeLine(int direction)
@@ -81,7 +89,7 @@ public class PlayerController : MonoBehaviour
         if (_characterController.isGrounded == false)
         {
             _changeVerticalVector.y = -Mathf.Sqrt(_jumpHeight * -2f * _gravity);
-            StartCoroutine(JumpDown());
+            StartCoroutine(Slide());
         }
         if (_characterController.isGrounded == true && _isSliding == false)
         {
@@ -101,27 +109,19 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Slide()
     {
         _isSliding = true;
-        _animator.SetBool("IsSlide", true);
+        _animator.SetTrigger("Slide");
         _characterController.height = _slideHeight;
         _characterController.center = _slideCenter;
         yield return new WaitForSeconds(_slideDuration);
         _characterController.height = _normalHeight;
         _characterController.center = _normalCenter;
         _isSliding = false;
-        _animator.SetBool("IsSlide", false);
+        _animator.ResetTrigger("Slide");
     }
     private IEnumerator Jump()
     {
-        _characterController.height = _slideHeight;
-        _animator.SetBool("IsJumping", true);
-        yield return new WaitForSeconds(0.9f);
-        _characterController.height = _normalHeight;
-        _animator.SetBool("IsJumping", false);
-    }
-    private IEnumerator JumpDown()
-    {
-        _animator.SetBool("IsJumpDown", true);
-        yield return new WaitForSeconds(1.76f);
-        _animator.SetBool("IsJumpDown", false);
+        _animator.SetTrigger("Jump");
+        yield return null;
+        _animator.ResetTrigger("Jump");
     }
 }
