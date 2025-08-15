@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _endGameUI;
     public TextMeshProUGUI _coinsText;
     private int _coins = 0;
+    private int _totalCoins = 0;
+
     private void Awake()
     {
         _playerCharacterController = GetComponent<CharacterController>();
@@ -20,6 +23,7 @@ public class GameController : MonoBehaviour
         {
             _endGameUI.SetActive(true);
             Time.timeScale = 0f;
+            SaveCoins(_coins);
         }
     }
 
@@ -29,8 +33,16 @@ public class GameController : MonoBehaviour
         {
             _coins++;
             Destroy(takeCoin.gameObject);
-            _coinsText.text =$"Coins: {_coins}";
+            _coinsText.text = $"Coins: {_coins}";
         }
+    }
+
+    private void SaveCoins(int coinsThisRun)
+    {
+        _totalCoins = PlayerPrefs.GetInt("Coins");
+        _totalCoins += coinsThisRun;
+        PlayerPrefs.SetInt("Coins", _totalCoins);
+        PlayerPrefs.Save();
     }
 
     public void RestartGame()
