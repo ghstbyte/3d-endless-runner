@@ -48,13 +48,18 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider takeCoin)
+    private void OnTriggerEnter(Collider additions)
     {
-        if (takeCoin.gameObject.CompareTag("Coins"))
+        if (additions.gameObject.CompareTag("Coins"))
         {
             _coins++;
-            Destroy(takeCoin.gameObject);
+            Destroy(additions.gameObject);
             _coinsText.text = $"Coins: {_coins}";
+        }
+        if (additions.gameObject.CompareTag("BonusStar"))
+        {
+            _scoreScript.ActiveBonus();
+            Destroy(additions.gameObject);
         }
     }
 
