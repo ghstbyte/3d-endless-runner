@@ -9,10 +9,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private GameObject _endGameUI;
     [SerializeField] private Score _scoreScript;
+    [SerializeField] private Shield _shieldScript;
     [SerializeField] private TMP_Text _recordScoreText;
-    public TextMeshProUGUI _coinsText;
     private int _coins = 0;
     private int _totalCoins = 0;
+    public TextMeshProUGUI _coinsText;
 
     private void Start()
     {
@@ -40,11 +41,18 @@ public class GameController : MonoBehaviour
     {
         if (hit.collider.CompareTag("Obstacle"))
         {
+            if (_shieldScript.IsImmortalActive)
+            {
+                Destroy(hit.gameObject);
+            }
+            else
+            {  
             _endGameUI.SetActive(true);
             SaveCoins(_coins);
             int _lastRunScore = int.Parse(_scoreScript._scoreText.text);
             PlayerPrefs.SetInt("lastRunScore", _lastRunScore);
             Time.timeScale = 0f;
+            }
         }
     }
 
@@ -59,6 +67,11 @@ public class GameController : MonoBehaviour
         if (additions.gameObject.CompareTag("BonusStar"))
         {
             _scoreScript.ActiveBonus();
+            Destroy(additions.gameObject);
+        }
+        if (additions.gameObject.CompareTag("BonusShield"))
+        {
+            _shieldScript.ActiveShield();
             Destroy(additions.gameObject);
         }
     }

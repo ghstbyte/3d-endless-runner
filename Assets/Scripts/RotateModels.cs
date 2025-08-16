@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CoinsFlip : MonoBehaviour
+public class RotateModels : MonoBehaviour
 {
     void Update()
     {

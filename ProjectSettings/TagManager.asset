@@ -7,6 +7,7 @@ TagManager:
   - Obstacle
   - Coins
   - BonusStar
+  - BonusShield
   layers:
   - Default
   - TransparentFX
