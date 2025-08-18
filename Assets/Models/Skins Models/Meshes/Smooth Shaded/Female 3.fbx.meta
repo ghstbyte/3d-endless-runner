@@ -1,29 +1,9 @@
 fileFormatVersion: 2
-guid: f7762e316286379469c83db16122c25b
+guid: 4e765b379df22f84babed709a75cf907
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch29_1001_Diffuse
-    second: {fileID: 2800000, guid: bd0b7fbb6b1511f4babbb935dc6958a6, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch29_1001_Glossiness
-    second: {fileID: 2800000, guid: acee8d7f3dac6ef42adf9b920f4d4788, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch29_1001_Normal
-    second: {fileID: 2800000, guid: 201fd0d47f7e114449c7a6d4ee2d382b, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Ch29_1001_Specular
-    second: {fileID: 2800000, guid: ab684452b6d62d647950cbc043c9dbb3, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -36,13 +16,15 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -70,7 +52,7 @@ ModelImporter:
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
-    bakeAxisConversion: 0
+    bakeAxisConversion: 1
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
@@ -111,13 +93,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 3
+  animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
@@ -125,3 +107,11 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 299182
+  packageName: Low Poly Female FREE - Low poly 3D by Shokubutsu
+  packageVersion: 1.0
+  assetPath: Assets/Shokubutsu Studio/Low Poly Female Free/Meshes/Smooth Shaded/Female
+    3.fbx
+  uploadId: 699920
