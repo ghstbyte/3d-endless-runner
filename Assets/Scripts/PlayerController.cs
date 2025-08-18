@@ -124,4 +124,28 @@ public class PlayerController : MonoBehaviour
         yield return null;
         _animator.ResetTrigger("Jump");
     }
+    private IEnumerator SlideLeft()
+    {
+        _isSliding = true;
+        _animator.SetTrigger("SlideLeft");
+        yield return new WaitForSeconds(_slideDuration / 2);
+        _animator.ResetTrigger("SlideLeft");
+        _isSliding = false;
+    }
+    private IEnumerator SlideRight()
+    {
+        _isSliding = true;
+        _animator.SetTrigger("SlideRight");
+        yield return new WaitForSeconds(_slideDuration / 2);
+        _animator.ResetTrigger("SlideRight");
+        _isSliding = false;
+    }
+    public void StartSlideLeft()
+    {
+        StartCoroutine(SlideLeft());
+    }
+    public void StartSlideRight()
+    {
+        StartCoroutine(SlideRight());
+    }
 }

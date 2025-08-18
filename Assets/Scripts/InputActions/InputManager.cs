@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    [SerializeField] private PlayerController _playerControllerScript;
     private Movement movement;
     private Vector2 _keyboardInputActions;
     private Vector2 _touchStartedPosition;
@@ -24,8 +25,16 @@ public class InputManager : MonoBehaviour
                     Vector2 delta = _touchCanceledPosition - _touchStartedPosition;
                 if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
                 {
-                    if (delta.x > 0) HorizontalMovement?.Invoke(+1);
-                    else HorizontalMovement?.Invoke(-1);
+                    if (delta.x > 0)
+                    {
+                        HorizontalMovement?.Invoke(+1);
+                        _playerControllerScript.StartSlideRight();
+                    }
+                    else
+                    {
+                        HorizontalMovement?.Invoke(-1);
+                        _playerControllerScript.StartSlideLeft();
+                    }
                 }
                 else
                 {
@@ -52,10 +61,12 @@ public class InputManager : MonoBehaviour
         if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.x > 0)
         {
             HorizontalMovement?.Invoke(+1);
+            _playerControllerScript.StartSlideRight();
         }
         else if (movement.Keyboard.Actions.WasPerformedThisFrame() && _keyboardInputActions.x < 0)
         {
             HorizontalMovement?.Invoke(-1);
+            _playerControllerScript.StartSlideLeft();
         }
 
         
