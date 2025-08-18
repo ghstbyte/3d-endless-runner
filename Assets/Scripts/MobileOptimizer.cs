@@ -2,13 +2,23 @@ using UnityEngine;
 
 public class MobileOptimizer : MonoBehaviour
 {
+    private static MobileOptimizer instance;
+
     private int originalWidth;
     private int originalHeight;
     private bool resolutionSet = false;
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
         DontDestroyOnLoad(gameObject);
+
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
