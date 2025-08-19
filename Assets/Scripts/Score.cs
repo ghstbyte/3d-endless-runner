@@ -1,12 +1,14 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System;
 
 public class Score : MonoBehaviour
 {
     public TextMeshProUGUI _scoreText;
     public TextMeshProUGUI _scoreBonusText;
     [SerializeField] private Transform _playerPosition;
+    [SerializeField] private GameObject _bonusUI;
     private float _score = 0f;
     private string _currentScore = "000000";
     private float _bonusTime = 30f;
@@ -46,20 +48,22 @@ public class Score : MonoBehaviour
             }
         }
         _lastZ = currentZ;
-        _scoreText.text = $"{Mathf.Round(_score)}";
         StartCoroutine(AnimatedScore(_score));
     }
     private IEnumerator BonusScore()
     {
+        _bonusUI.SetActive(true);
         _isBonusActive = true;
         float bonusTimeActive = _bonusTime;
 
-        while (bonusTimeActive > 0)
+        while (bonusTimeActive >= 0)
         {
-            bonusTimeActive -= Time.deltaTime;
-            _scoreBonusText.text = $"Bonus: {Mathf.Ceil(bonusTimeActive)}";
-            yield return null;
+            TimeSpan time = TimeSpan.FromSeconds(bonusTimeActive);
+            _scoreBonusText.text = time.ToString(@"m\:ss");
+            yield return new WaitForSeconds(1f);
+            bonusTimeActive--;
         }
+        _bonusUI.SetActive(false);
         _isBonusActive = false;
         _scoreBonusText.text = "";
     }
