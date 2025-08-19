@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Score _scoreScript;
     [SerializeField] private Shield _shieldScript;
     [SerializeField] private TMP_Text _recordScoreText;
+    [SerializeField] private Coins coinsScript;
     private int _coins = 0;
     private int _totalCoins = 0;
     public TextMeshProUGUI _coinsText;
@@ -62,7 +63,8 @@ public class GameController : MonoBehaviour
         {
             _coins++;
             Destroy(additions.gameObject);
-            _coinsText.text = $"Coins: {_coins}";
+            coinsScript.updateCoinPanel(_coins);
+            _coinsText.text = $"{_coins}";
         }
         if (additions.gameObject.CompareTag("BonusStar"))
         {

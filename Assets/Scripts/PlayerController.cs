@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private const float _maxSpeed = 100f;
     private int _currentLine = 0;
     private float _gravity = -9.81f;
-    private float _jumpHeight = 3f;
+    private float _jumpHeight = 5f;
     private CharacterController _characterController;
     private Vector3 _direction;
     private Vector3 _playerTargetPosition;
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_characterController.isGrounded == false)
         {
-            _changeVerticalVector.y = -Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            _changeVerticalVector.y = -Mathf.Sqrt(_jumpHeight * -5f * _gravity);
             StartCoroutine(Slide());
         }
         if (_characterController.isGrounded == true && _isSliding == false)
