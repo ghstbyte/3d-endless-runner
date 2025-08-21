@@ -3,7 +3,7 @@ using UnityEngine;
 public class Coins : MonoBehaviour
 {
     [SerializeField] RectTransform coinPanel;
-    private float _stepWidth = 25f;
+    private float _stepWidth = 15f;
 
     public void updateCoinPanel(int coinValue)
     {
