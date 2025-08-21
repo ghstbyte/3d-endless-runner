@@ -8,7 +8,9 @@ public class Score : MonoBehaviour
     public TextMeshProUGUI _scoreText;
     public TextMeshProUGUI _scoreBonusText;
     [SerializeField] private Transform _playerPosition;
-    [SerializeField] private GameObject _bonusUI;
+    [SerializeField] private GameObject _bonusUIStar;
+    [SerializeField] private RectTransform _bonusUIPanel;
+    private float _startWidth = 310f;
     private float _score = 0f;
     private string _currentScore = "000000";
     private float _bonusTime = 30f;
@@ -52,7 +54,9 @@ public class Score : MonoBehaviour
     }
     private IEnumerator BonusScore()
     {
-        _bonusUI.SetActive(true);
+        _bonusUIStar.SetActive(true);
+        float _newWidth = 380f;
+        _bonusUIPanel.sizeDelta = new Vector2(_newWidth, _bonusUIPanel.sizeDelta.y);
         _isBonusActive = true;
         float bonusTimeActive = _bonusTime;
 
@@ -63,9 +67,10 @@ public class Score : MonoBehaviour
             yield return new WaitForSeconds(1f);
             bonusTimeActive--;
         }
-        _bonusUI.SetActive(false);
+        _bonusUIStar.SetActive(false);
         _isBonusActive = false;
         _scoreBonusText.text = "";
+        _bonusUIPanel.sizeDelta = new Vector2(_startWidth, _bonusUIPanel.sizeDelta.y);
     }
     private IEnumerator AnimatedScore(float targetScore)
     {
