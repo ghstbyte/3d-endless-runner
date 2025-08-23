@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private const float _maxSpeed = 100f;
     private int _currentLine = 0;
     private float _gravity = -9.81f;
-    private float _jumpHeight = 5f;
+    private float _jumpHeight = 2f;
     private CharacterController _characterController;
     private Vector3 _direction;
     private Vector3 _playerTargetPosition;
