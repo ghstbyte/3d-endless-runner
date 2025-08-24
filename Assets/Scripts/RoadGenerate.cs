@@ -7,7 +7,7 @@ public class RoadGenerate : MonoBehaviour
     private List<GameObject> _activeRoads = new List<GameObject>();
     public GameObject[] _roadPrefabs;
     private float _spawnPos = 0f;
-    private float _roadLength = 100f;
+    private float _roadLength = 630f;
     private int _startRoads = 6;
 
     void Start()
